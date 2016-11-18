@@ -60,11 +60,11 @@ vwa
 
 ##1) Prepare the files.
 
-###1.1) download the fasta of all chromosomes with wget (-P prefix specifies the download destination). Pipe into gunzip
+1.1) download the fasta of all chromosomes with wget (-P prefix specifies the download destination). Pipe into gunzip
 	wget -r -A ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.13.fasta.gz -P "/home/jbriner/	Desktop/(F16) Informatics/FinalExercises/Overview/dmel-all-chromosome-r6.13.fasta" | gunzip  *.fastq.gz | less
 
 
-###1.2) Get a sense for what I'm dealing with
+1.2) Get a sense for what I'm dealing with
 	
   ```
   cd "/home/jbriner/Dropbox/UCI/Classes/(F16) Informatics/FinalExercises/Overview" 
@@ -86,7 +86,7 @@ vwa
 	seq_length.py input_file.fasta |cut -f 2 | histogram.py --percentage --max=12972 --min=1001
 
 
-###2.1) Print a summary report: total number of (nucelotides, Ns, sequences)
+2.1) Print a summary report: total number of (nucelotides, Ns, sequences)
 
 	#Exclude the header (by what criterion?). Just count A,C,T,G.
 	egrep -v ^$ #removes
@@ -99,7 +99,7 @@ vwa
 
 
 
-###2.2) Print a summary report: total number of (nucelotides, Ns, sequences), but now for sequence data split into two parts: > 100kb and < 100kb
+2.2) Print a summary report: total number of (nucelotides, Ns, sequences), but now for sequence data split into two parts: > 100kb and < 100kb
 
 	#split data (check the baseball exercise)
 
