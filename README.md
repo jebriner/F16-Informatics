@@ -50,15 +50,8 @@ To peek at software JJ has made available to the cluster:
 	module load jje/jjeutils/0.1a  #has a lot of other software we've used in class
 	module list #verify
 	module whatis #probe
-```
-
-`module load /data/modulefiles/USER_CONTRIBUTED_SOFTWARE/kent; /data/modulefiles/USER_CONTRIBUTED_SOFTWARE/jje/jjeutils`
-
-
-
-
-
-
+	module load /data/modulefiles/USER_CONTRIBUTED_SOFTWARE/kent; /data/modulefiles/USER_CONTRIBUTED_SOFTWARE/jje/jjeutils
+	```
 
 
 
@@ -68,7 +61,7 @@ To peek at software JJ has made available to the cluster:
 
 1.1) download the fasta of all chromosomes with wget (-P prefix specifies the download destination). Pipe into gunzip.
 ```
-wget -r -A ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.13.fasta.gz -P "/home/jbriner/	Desktop/(F16) Informatics/FinalExercises/Overview/dmel-all-chromosome-r6.13.fasta" | gunzip  *.fastq.gz | less
+wget -r -A ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.13.fasta.gz -P "/home/jbriner/Desktop/(F16) Informatics/FinalExercises/Overview/dmel-all-chromosome-r6.13.fasta" | gunzip  *.fastq.gz | less
 ```
 
 
@@ -127,9 +120,17 @@ https://www.biostars.org/p/47751/
 
 `bioawk -c sam`
 
+
+
+####3.1) Sequence length distribution
+
+####3.2) Sequence GC% distribution
+
 Get the %GC from FASTA:
 `awk -c fastx '{ print ">"$name; print gc($seq) }' seq.fa.gz`
 
+
+####3.3) Cumulative genome size sorted from largest to smallest sequences
 
 
 ----------------------------------------------------------------------
