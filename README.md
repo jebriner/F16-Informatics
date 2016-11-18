@@ -62,7 +62,7 @@ To peek at software JJ has made available to the cluster:
 1.1) Download the fasta of all chromosomes with wget (the -P prefix specifies the download destination). Pipe into gunzip.
 
 ```shell
-wget -r -A ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.13.fasta.gz -P "/home/jbriner/Desktop/(F16) Informatics/FinalExercises/Overview/dmel-all-chromosome-r6.13.fasta" | gunzip  *.fastq.gz | less
+wget -r -A "ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.13.fasta.gz" -O "/home/jbriner/Desktop/(F16) Informatics/FinalExercises/Overview/dmel-all-chromosome-r6.13.fasta" | gunzip  *.fastq.gz | less
 ```
 
 
@@ -88,6 +88,8 @@ head "dmel-all-chromosome-r6.13.fasta"
 
 	```shell
 	#Exclude the header (by what criterion?). Just count A,C,T,G.
+	#Extract mapped reads with header:
+	awk -c sam -H '!and($flag,4)'
 	
 	egrep -v ^$ #removes
 	
@@ -107,7 +109,6 @@ head "dmel-all-chromosome-r6.13.fasta"
 2.2) Print a summary report: total number of (nucelotides, Ns, sequences), but now for sequence data split into two parts: > 100kb and < 100kb
 
 	```shell
-	#split data (check the baseball exercise)
 	#how many sequences are shorter than 100000bp
 	bioawk -cfastx 'BEGIN{ shorter = 0} {if (length($seq) < 100000) shorter += 1} END {print "shorter sequences", shorter}' test-trimmed.fastq
 
@@ -158,3 +159,6 @@ get sam file
 interpret what's going on in the sam file
 vwa
 
+```
+wget -r "ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/dmel_r6.13_FB2016_05/gtf/dmel-all-r6.13.gtf.gz" -O "/home/jbriner/Dropbox/UCI/Classes/(F16) Informatics/FinalExercises/Overview/dmel-all-r6.13.gtf.gz" | gunzip *.gz | less
+```
