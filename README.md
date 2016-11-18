@@ -20,10 +20,12 @@ We will be working with the *Drosophila melanogaster* genome. You can start at f
 
 -------------------------------------------------
 
+##0) Preliminaries
+
 `ssh jbriner@hpc.oit.uci.edu`
 
 Module load allows you to use software uploaded by individual users, modifying your environment on a per-module basis. 
-To peek at software jje has made available to the cluster:
+To peek at software JJ has made available to the cluster:
 
 ```
 	module avail #see what's available
@@ -36,21 +38,8 @@ To peek at software jje has made available to the cluster:
 `module load /data/modulefiles/USER_CONTRIBUTED_SOFTWARE/kent; /data/modulefiles/USER_CONTRIBUTED_SOFTWARE/jje/jjeutils`
 
 
-##Bioawk 
-Bioawk makes it nicer to deal with bio data files (e.g. SAM, FASTA/Q)
-https://www.biostars.org/p/47751/
-`bioawk -c sam`
-can use bioawk to both filter on size and get GC content
-
-##hxor 
-JJ's (horizontal XOR) shortcut for comparing the read orientation in a true/false fashion. Do they match or do the strands run opposite each other? Weird mappings hint at biologically interesting things like deletions, insertions, duplications, inversions, etc. Each has a distinctive signal.
 
 
-Goal: Identify the mutation. Tell where and what kind (deletions, insertions, duplications, inversions). 
-
-get sam file
-interpret what's going on in the sam file
-vwa
 
 
 
@@ -108,6 +97,17 @@ vwa
 
 
 
+----------------------------------------------------------------------
+
+##3) Print summary plots
+
+###Bioawk 
+Bioawk makes it nicer to deal with bio data files (e.g. SAM, FASTA/Q). You can use bioawk to both filter on size and get GC content. 
+https://www.biostars.org/p/47751/
+
+`bioawk -c sam`
+
+
 
 ----------------------------------------------------------------------
 
@@ -117,3 +117,15 @@ Multiple types of genomes.
 Use different aspects of the reads to figure out what is going on.
 Investigate which of the flag fields indicates informative reads
 A couple of R plots will make it easier to figure out
+
+
+##hxor 
+JJ's (horizontal XOR) shortcut for comparing the read orientation in a true/false fashion. Do they match or do the strands run opposite each other? Weird mappings hint at biologically interesting things like deletions, insertions, duplications, inversions, etc. Each has a distinctive signal.
+
+
+Goal: Identify the mutation. Tell where and what kind (deletions, insertions, duplications, inversions). 
+
+get sam file
+interpret what's going on in the sam file
+vwa
+
