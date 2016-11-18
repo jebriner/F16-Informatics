@@ -24,12 +24,12 @@ We will be working with the *Drosophila melanogaster* genome. You can start at f
 Go to the most current download genomes section at flybase.org and download the gtf annotation file for *D. melanogaster*.
 
 
-###Print a summary report with the following information:
+####Print a summary report with the following information:
 
 + Total number of features of each type, sorted from the most common to the least common
 + Total number of genes per chromosome arm (X, Y, 2L, 2R, 3L, 3R, 4)
-+ Print summary plots of the following:
 
+####Print summary plots of the following:
 + Histogram of the number of transcripts per gene
 + Histogram of the length of genes
 + Histogram of the length of exons
