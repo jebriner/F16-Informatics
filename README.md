@@ -44,7 +44,7 @@ Get on the HPC.
 
 Module load allows you to use software uploaded by individual users, modifying your environment on a per-module basis. 
 To peek at software JJ has made available to the cluster:
-```
+```shell
 	module avail #see what's available
 	module load jje/kent/2014.02.19  #has FAsize (fasta nucleotide counting)
 	module load jje/jjeutils/0.1a  #has a lot of other software we've used in class
@@ -61,31 +61,34 @@ To peek at software JJ has made available to the cluster:
 
 1.1) Download the fasta of all chromosomes with wget (the -P prefix specifies the download destination). Pipe into gunzip.
 
-```wget -r -A ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.13.fasta.gz -P "/home/jbriner/Desktop/(F16) Informatics/FinalExercises/Overview/dmel-all-chromosome-r6.13.fasta" | gunzip  *.fastq.gz | less
+```shell
+wget -r -A ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.13.fasta.gz -P "/home/jbriner/Desktop/(F16) Informatics/FinalExercises/Overview/dmel-all-chromosome-r6.13.fasta" | gunzip  *.fastq.gz | less
 ```
 
 
 1.2) Get a sense for what I'm dealing with
-	
-``` 
-  cd "/home/jbriner/Dropbox/UCI/Classes/(F16) Informatics/FinalExercises/Overview" 
-	head "dmel-all-chromosome-r6.13.fasta"
+
+```shell
+cd "/home/jbriner/Dropbox/UCI/Classes/(F16) Informatics/FinalExercises/Overview" 
+head "dmel-all-chromosome-r6.13.fasta"
 ```
 
 ------------------------------------------------------------------------
 
 
 ##2) Summary time
-
+```shell
 	#Install package. Command line utilities for data analysis
 	pip install data_hacks
 	seq_length.py input_file.fasta |cut -f 2 | histogram.py --percentage --max=12972 --min=1001
+```
 
 
 2.1) Print a summary report: total number of (nucelotides, Ns, sequences)
 
-	Exclude the header (by what criterion?). Just count A,C,T,G.
-	```
+	```shell
+	#Exclude the header (by what criterion?). Just count A,C,T,G.
+	
 	egrep -v ^$ #removes
 
 
@@ -99,10 +102,12 @@ To peek at software JJ has made available to the cluster:
 
 2.2) Print a summary report: total number of (nucelotides, Ns, sequences), but now for sequence data split into two parts: > 100kb and < 100kb
 
+	```shell
 	#split data (check the baseball exercise)
 
 	subset1
 	subset2
+	```
 
 
 ----------------------------------------------------------------------
