@@ -90,12 +90,16 @@ head "dmel-all-chromosome-r6.13.fasta"
 	#Exclude the header (by what criterion?). Just count A,C,T,G.
 	
 	egrep -v ^$ #removes
-
-
+	
 	#How many nucleotides?
 	count #count all letters that are A,C,T, or G
 
 	#faSize 
+	
+	#count sequences using the built-in variable NR (number of records):
+	bioawk -c fastx 'END{print NR}' test.fastq
+
+	
 	```
 
 
@@ -104,9 +108,9 @@ head "dmel-all-chromosome-r6.13.fasta"
 
 	```shell
 	#split data (check the baseball exercise)
+	#how many sequences are shorter than 100000bp
+	bioawk -cfastx 'BEGIN{ shorter = 0} {if (length($seq) < 100000) shorter += 1} END {print "shorter sequences", shorter}' test-trimmed.fastq
 
-	subset1
-	subset2
 	```
 
 
@@ -124,9 +128,10 @@ https://www.biostars.org/p/47751/
 
 ####3.1) Sequence length distribution
 
+
 ####3.2) Sequence GC% distribution
 
-Get the %GC from FASTA:
+Get the %GC from FASTA. Ignore N's.
 `awk -c fastx '{ print ">"$name; print gc($seq) }' seq.fa.gz`
 
 
