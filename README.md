@@ -77,7 +77,8 @@ To peek at software JJ has made available to the cluster:
 
 2.1) Print a summary report: total number of (nucelotides, Ns, sequences)
 
-	#Exclude the header (by what criterion?). Just count A,C,T,G.
+	Exclude the header (by what criterion?). Just count A,C,T,G.
+	```
 	egrep -v ^$ #removes
 
 
@@ -85,6 +86,7 @@ To peek at software JJ has made available to the cluster:
 	count #count all letters that are A,C,T, or G
 
 	#faSize 
+	```
 
 
 
@@ -106,6 +108,9 @@ Bioawk makes it nicer to deal with bio data files (e.g. SAM, FASTA/Q). You can u
 https://www.biostars.org/p/47751/
 
 `bioawk -c sam`
+
+Get the %GC from FASTA:
+`awk -c fastx '{ print ">"$name; print gc($seq) }' seq.fa.gz`
 
 
 
