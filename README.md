@@ -109,6 +109,9 @@ GAG ?
 		#Output = 1154850
 
 	#3. Total number of sequences
+		#Since each sequence is prefaced by a header, search for the number of times a header-specific string occurs:
+		grep "species=Dmel" -o dmel-all-chromosome-r6.13.fasta | wc -l 
+		#Output = 1870
 	
 	
 	#----------------
