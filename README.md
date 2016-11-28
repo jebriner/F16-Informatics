@@ -68,7 +68,7 @@ wget -r -A "ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/
 
 1.2) Get a sense for what I'm dealing with
 
-```shell
+```
 cd "/home/jbriner/Dropbox/UCI/Classes/(F16) Informatics/FinalExercises/Overview" 
 head "dmel-all-chromosome-r6.13.fasta"
 ```
@@ -77,7 +77,12 @@ head "dmel-all-chromosome-r6.13.fasta"
 
 
 ##2) Summary time
-```shell
+
+Packages used:
+bedtools http://bedtools.readthedocs.io/en/latest/
+data_hacks ?
+
+```
 	#Install package. Command line utilities for data analysis
 	pip install data_hacks
 	seq_length.py input_file.fasta |cut -f 2 | histogram.py --percentage --max=12972 --min=1001
@@ -86,7 +91,7 @@ head "dmel-all-chromosome-r6.13.fasta"
 
 2.1) Print a summary report: total number of (nucelotides, Ns, sequences)
 
-	```shell
+	```
 	#Exclude the header (by what criterion?). Just count A,C,T,G.
 	#Extract mapped reads with header:
 	awk -c sam -H '!and($flag,4)'
@@ -108,7 +113,7 @@ head "dmel-all-chromosome-r6.13.fasta"
 
 2.2) Print a summary report: total number of (nucelotides, Ns, sequences), but now for sequence data split into two parts: > 100kb and < 100kb
 
-	```shell
+	```
 	#how many sequences are shorter than 100000bp
 	bioawk -cfastx 'BEGIN{ shorter = 0} {if (length($seq) < 100000) shorter += 1} END {print "shorter sequences", shorter}' test-trimmed.fastq
 
