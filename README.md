@@ -78,9 +78,14 @@ head "dmel-all-chromosome-r6.13.fasta"
 
 ##2) Summary time
 
-Packages used:
+###Packages used:
+
+bioawk
+
 bedtools http://bedtools.readthedocs.io/en/latest/
+
 data_hacks ?
+
 GAG ?
 
 ```
@@ -100,7 +105,9 @@ GAG ?
 		#Output = 142576909
 	
 	#2. Total number of Ns (unknown bases)
-	
+		grep N -o dmel-all-chromosome-r6.13.fasta | wc -l
+		#Output = 1154850
+
 	#3. Total number of sequences
 	
 	
