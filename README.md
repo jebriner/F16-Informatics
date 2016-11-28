@@ -98,20 +98,26 @@ GAG ?
 2.1) Print a summary report: total number of (nucelotides, Ns, sequences)
 
 	```
-	#0. Exclude the header(s)  
-	
-	#1. Total number of nucleotides (A,C,T,G)
-		egrep "A|C|T|G" -o dmel-all-chromosome-r6.13.fasta | wc -l
-		#Output = 142576909
-	
-	#2. Total number of Ns (unknown bases)
-		grep N -o dmel-all-chromosome-r6.13.fasta | wc -l
-		#Output = 1154850
-
 	#3. Total number of sequences
 		#Since each sequence is prefaced by a header, search for the number of times a header-specific string occurs:
 		grep "species=Dmel" -o dmel-all-chromosome-r6.13.fasta | wc -l 
 		#Output = 1870
+		
+		
+	#0. Exclude the header(s) and create a new, headerless fasta file
+		#This deletes all the characters from ">" to the end of the line, then creates a new file
+		sed 's/>.*$//' dmel-all-chromosome-r6.13.fasta > dmel-all-chromosome-r6.13.2.fasta
+
+	
+	#1. Total number of nucleotides (A,C,T,G) in headerless file
+		egrep "A|C|T|G" -o dmel-all-chromosome-r6.13.2.fasta | wc -l
+		#Output = 142576909
+	
+	#2. Total number of Ns (unknown bases) in headerless file
+		grep N -o dmel-all-chromosome-r6.13.2.fasta | wc -l
+		#Output = 1154850
+
+	
 	
 	
 	#----------------
