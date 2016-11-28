@@ -101,7 +101,7 @@ GAG ?
 	#3. Total number of sequences
 		#Since each sequence is prefaced by a header, search for the number of times a header-specific string occurs:
 		grep "species=Dmel" -o dmel-all-chromosome-r6.13.fasta | wc -l 
-		#Output = 1870
+			#Output = 1870
 		
 		
 	#0. Exclude the header(s) and create a new, headerless fasta file
@@ -111,14 +111,14 @@ GAG ?
 	
 	#1. Total number of nucleotides (A,C,T,G) in headerless file
 		egrep "A|C|T|G" -o dmel-all-chromosome-r6.13.2.fasta | wc -l
-		#Output (header file) = 142576909 
-		#Output (headerless file) = 142573024
+			#Output (header file) = 142576909 
+			#Output (headerless file) = 142573024
 
 	
 	#2. Total number of Ns (unknown bases) in headerless file
 		grep N -o dmel-all-chromosome-r6.13.2.fasta | wc -l
-		#Output (header file) = 1154850
-		#Output (headerless file) = 1152978
+			#Output (header file) = 1154850
+			#Output (headerless file) = 1152978
 
 
 	
