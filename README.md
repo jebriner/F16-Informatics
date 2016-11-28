@@ -61,7 +61,7 @@ To peek at software JJ has made available to the cluster:
 
 1.1) Download the fasta of all chromosomes with wget (the -P prefix specifies the download destination). Pipe into gunzip.
 
-```shell
+```
 wget -r -A "ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.13.fasta.gz" -O "/home/jbriner/Desktop/(F16) Informatics/FinalExercises/Overview/dmel-all-chromosome-r6.13.fasta" | gunzip  *.fastq.gz | less
 ```
 
@@ -81,6 +81,7 @@ head "dmel-all-chromosome-r6.13.fasta"
 Packages used:
 bedtools http://bedtools.readthedocs.io/en/latest/
 data_hacks ?
+GAG ?
 
 ```
 	#Install package. Command line utilities for data analysis
@@ -92,14 +93,26 @@ data_hacks ?
 2.1) Print a summary report: total number of (nucelotides, Ns, sequences)
 
 	```
-	#Exclude the header (by what criterion?). Just count A,C,T,G.
+	#0. Exclude the header(s)  
+	
+	#1. Total number of nucleotides (A,C,T,G)
+		egrep "A|C|T|G" -o dmel-all-chromosome-r6.13.fasta | wc -l
+		#Output = 142576909
+	
+	#2. Total number of Ns (unknown bases)
+	
+	#3. Total number of sequences
+	
+	
+	#----------------
+	
+	
 	#Extract mapped reads with header:
 	awk -c sam -H '!and($flag,4)'
 	
 	egrep -v ^$ #removes
 	
-	#How many nucleotides?
-	count #count all letters that are A,C,T, or G
+	
 
 	#faSize 
 	
