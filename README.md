@@ -2,17 +2,17 @@
 
 https://drive.google.com/uc?export=download&id=0B89qjFzcZ81rbjhPM3lOa2ozU00
 
-##Summarize a genome assembly
+##A) Summarize a genome assembly
 We will be working with the *Drosophila melanogaster* genome. You can start at flybase.org. Go to the most current download genomes section and download the fasta of all chromosomes.
 
-####Print a summary report with the following information:
+####A-a) Print a summary report with the following information:
 
 + Total number of nucleotides
 + Total number of Ns
 + Total number of sequences
 + Repeat the above analysis, except split the data into sequences > 100kb and < 100kb
 
-####Print summary plots of the following:
+####A-b) Print summary plots of the following:
 
 + Sequence length distribution
 + Sequence GC% distribution
@@ -20,16 +20,16 @@ We will be working with the *Drosophila melanogaster* genome. You can start at f
 
 
 
-##Summarize an annotation file
+##B) Summarize an annotation file
 Go to the most current download genomes section at flybase.org and download the gtf annotation file for *D. melanogaster*.
 
 
-####Print a summary report with the following information:
+####B-a) Print a summary report with the following information:
 
 + Total number of features of each type, sorted from the most common to the least common
 + Total number of genes per chromosome arm (X, Y, 2L, 2R, 3L, 3R, 4)
 
-####Print summary plots of the following:
+####B-b) Print summary plots of the following:
 + Histogram of the number of transcripts per gene
 + Histogram of the length of genes
 + Histogram of the length of exons
