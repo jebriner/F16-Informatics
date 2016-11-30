@@ -37,17 +37,14 @@ Go to the most current download genomes section at flybase.org and download the 
 
 -------------------------------------------------
 
-##0) Preliminaries
 
-Get on the HPC.
-`ssh jbriner@hpc.oit.uci.edu`
+##0) Preliminaries
 
 Module load allows you to use software uploaded by individual users, modifying your environment on a per-module basis. 
 To peek at software JJ has made available to the cluster:
 ```shell
 	module avail #see what's available
-	module load jje/kent/2014.02.19  #has FAsize (fasta nucleotide counting)
-	module load jje/jjeutils/0.1a  #has a lot of other software we've used in class
+	module load jje/jjeutils jje/kent #kent has FAsize (fasta nucleotide counting), + a lot of other software we've used in class
 	module list #verify
 	module whatis #probe
 	module load /data/modulefiles/USER_CONTRIBUTED_SOFTWARE/kent; /data/modulefiles/USER_CONTRIBUTED_SOFTWARE/jje/jjeutils
@@ -55,20 +52,17 @@ To peek at software JJ has made available to the cluster:
 
 
 
+
 ----------------------------------------------------------
 
 ##1) Prepare the files.
-
-1.1) Download the fasta of all chromosomes with wget (the -P prefix specifies the download destination). Pipe into gunzip.
-
 ```
+#1.1) Download the fasta of all chromosomes with wget (the -P prefix specifies the download destination). Pipe into gunzip.
+
 wget -r -A "ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.13.fasta.gz" -O "/home/jbriner/Desktop/(F16) Informatics/FinalExercises/Overview/dmel-all-chromosome-r6.13.fasta" | gunzip  *.fastq.gz | less
-```
 
+#1.2) Get a sense for what I'm dealing with
 
-1.2) Get a sense for what I'm dealing with
-
-```
 cd "/home/jbriner/Dropbox/UCI/Classes/(F16) Informatics/FinalExercises/Overview" 
 head "dmel-all-chromosome-r6.13.fasta"
 ```
@@ -98,30 +92,40 @@ GAG ?
 2.1) Print a summary report: total number of (nucelotides, Ns, sequences)
 
 	```
-	#3. Total number of sequences
+	#1. Total number of sequences
 		#Since each sequence is prefaced by a header, search for the number of times a header-specific string occurs:
 		grep "species=Dmel" -o dmel-all-chromosome-r6.13.fasta | wc -l 
 			#Output = 1870
 		
 		
-	#0. Exclude the header(s) and create a new, headerless fasta file
+	#2. Exclude the header(s) and create a new, headerless fasta file
 		#This deletes all the characters from ">" to the end of the line, then creates a new file
 		sed 's/>.*$//' dmel-all-chromosome-r6.13.fasta > dmel-all-chromosome-r6.13.2.fasta
 
 	
-	#1. Total number of nucleotides (A,C,T,G) in headerless file
+	#3. Total number of nucleotides (A,C,T,G) in headerless file
 		egrep "A|C|T|G" -o dmel-all-chromosome-r6.13.2.fasta | wc -l
 			#Output (header file) = 142576909 
 			#Output (headerless file) = 142573024
 
 	
-	#2. Total number of Ns (unknown bases) in headerless file
+	#4. Total number of Ns (unknown bases) in headerless file
 		grep N -o dmel-all-chromosome-r6.13.2.fasta | wc -l
 			#Output (header file) = 1154850
 			#Output (headerless file) = 1152978
+	```
 
 
-	
+
+2.2) Print a summary report: total number of (nucelotides, Ns, sequences), but now for sequence data split into two parts: > 100kb and < 100kb
+
+	```
+	#1. Return to using the original, header'd file
+	grep "length=23513712l" -o dmel-all-chromosome-r6.13.fasta | wc -l 
+
+
+	#how many sequences are shorter than 100000bp
+	bioawk -cfastx 'BEGIN{ shorter = 0} {if (length($seq) < 100000) shorter += 1} END {print "shorter sequences", shorter}' test-trimmed.fastq
 	
 	
 	#----------------
@@ -130,25 +134,10 @@ GAG ?
 	#Extract mapped reads with header:
 	awk -c sam -H '!and($flag,4)'
 	
-	egrep -v ^$ #removes
-	
-	
-
 	#faSize 
 	
 	#count sequences using the built-in variable NR (number of records):
 	bioawk -c fastx 'END{print NR}' test.fastq
-
-	
-	```
-
-
-
-2.2) Print a summary report: total number of (nucelotides, Ns, sequences), but now for sequence data split into two parts: > 100kb and < 100kb
-
-	```
-	#how many sequences are shorter than 100000bp
-	bioawk -cfastx 'BEGIN{ shorter = 0} {if (length($seq) < 100000) shorter += 1} END {print "shorter sequences", shorter}' test-trimmed.fastq
 
 	```
 
