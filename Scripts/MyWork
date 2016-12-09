@@ -1,0 +1,105 @@
+161106 Informatics
+
+
+ssh jbriner@hpc.oit.uci.edu
+
+#module load allows you to use software uploaded by individual users, modifying your environment on a per-module basis. 
+Peek at software jje has made available to the cluster:
+
+	module avail #see what's available
+	module load jje/kent/2014.02.19  #has FAsize (fasta nucleotide counting)
+	module load jje/jjeutils/0.1a  #has a lot of other software we've used in class
+	module list #verify
+	module whatis #probe
+
+
+module load /data/modulefiles/USER_CONTRIBUTED_SOFTWARE/kent; /data/modulefiles/USER_CONTRIBUTED_SOFTWARE/jje/jjeutils
+
+
+#bioawk makes it nicer to deal with bio data files (e.g. SAM, FASTA/Q)
+https://www.biostars.org/p/47751/
+bioawk -c sam
+
+#hxor - JJ's (horizontal XOR) shortcut for comparing the read orientation in a true/false fashion. Do they match or do the strands run opposite each other? 
+#Weird mappings hint at biologically interesting things like deletions, insertions, duplications, inversions, etc. Each has a distinctive signal.
+get sam file
+interpret what's going on in the sam file
+vwa
+
+#Goal: Identify the mutation. Tell where and what kind (deletions, insertions, duplications, inversions). 
+
+
+
+----------------------------------------------------------
+
+#1) Prepare the files.
+
+#1.1) download the fasta of all chromosomes with wget (-P prefix specifies the download destination). Pipe into gunzip
+	wget -r -A ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.13.fasta.gz -P "/home/jbriner/	Desktop/(F16) Informatics/FinalExercises/Overview/dmel-all-chromosome-r6.13.fasta" | gunzip  *.fastq.gz | less
+
+
+#1.2) Get a sense for what I'm dealing with
+	cd "/home/jbriner/Dropbox/UCI/Classes/(F16) Informatics/FinalExercises/Overview" 
+	head "dmel-all-chromosome-r6.13.fasta"
+
+	#>2L type=golden_path_region; loc=2L:1..23513712; ID=2L; dbxref=GB:AE014134,GB:AE014134,REFSEQ:NT_033779; 		MD5=b6a98b7c676bdaa11ec9521ed15aff2b; length=23513712; release=r6.13; species=Dmel;
+	
+	#Data is arranged in columns
+
+
+------------------------------------------------------------------------
+
+
+#2) Summary time
+
+	#Install package. Command line utilities for data analysis
+	pip install data_hacks
+	seq_length.py input_file.fasta |cut -f 2 | histogram.py --percentage --max=12972 --min=1001
+
+
+#2.1) Print a summary report: total number of (nucelotides, Ns, sequences)
+
+		#3. Total number of sequences
+			#Since each sequence is prefaced by a header, search for the number of times a header-specific string occurs:
+			grep "species=Dmel" -o dmel-all-chromosome-r6.13.fasta | wc -l 
+				#Output = 1870
+
+
+		#0. Exclude the header(s) and create a new, headerless fasta file
+			#This deletes all the characters from ">" to the end of the line, then creates a new file
+			sed 's/>.*$//' dmel-all-chromosome-r6.13.fasta > dmel-all-chromosome-r6.13.2.fasta
+
+
+		#1. Total number of nucleotides (A,C,T,G) in headerless file
+			egrep "A|C|T|G" -o dmel-all-chromosome-r6.13.2.fasta | wc -l
+				#Output (header file) = 142576909 
+				#Output (headerless file) = 142573024
+
+
+		#2. Total number of Ns (unknown bases) in headerless file
+			grep N -o dmel-all-chromosome-r6.13.2.fasta | wc -l
+				#Output (header file) = 1154850
+				#Output (headerless file) = 1152978
+
+
+
+#2.2) Print a summary report: total number of (nucelotides, Ns, sequences), but now for sequence data split into two parts: > 100kb and < 100kb
+
+	#split data (check the baseball exercise)
+#"length=23513712
+
+	subset1
+	subset2
+
+
+
+
+----------------------------------------------------------------------
+
+
+#Running vwa of some reads against a reference genome. Interpret those reads to figure out what kind of mutation you're dealing with and where the mutation is. 
+#Multiple types of genomes.
+#Use different aspects of the reads to figure out what is going on.
+#Investigate which of the flag fields indicates informative reads
+#A couple of R plots will make it easier to figure out
+
