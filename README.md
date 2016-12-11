@@ -41,13 +41,11 @@ Go to the most current download genomes section at flybase.org and download the 
 ##0) Preliminaries
 
 Module load allows you to use software uploaded by individual users, modifying your environment on a per-module basis. 
-To peek at software JJ has made available to the cluster:
+To see software JJ has made available to the cluster:
 ```shell
 	module avail #see what's available
-	module load jje/jjeutils jje/kent #kent has FAsize (fasta nucleotide counting), + a lot of other software we've used in class
+	module load jje/jjeutils jje/kent 
 	module list #verify
-	module whatis #probe
-	module load /data/modulefiles/USER_CONTRIBUTED_SOFTWARE/kent; /data/modulefiles/USER_CONTRIBUTED_SOFTWARE/jje/jjeutils
 ```
 
 
@@ -166,26 +164,3 @@ Get the %GC from FASTA. Ignore N's.
 ####3.3) Cumulative genome size sorted from largest to smallest sequences
 
 
-----------------------------------------------------------------------
-
-
-Running vwa of some reads against a reference genome. Interpret those reads to figure out what kind of mutation you're dealing with and where the mutation is. 
-Multiple types of genomes.
-Use different aspects of the reads to figure out what is going on.
-Investigate which of the flag fields indicates informative reads
-A couple of R plots will make it easier to figure out
-
-
-##hxor 
-JJ's (horizontal XOR) shortcut for comparing the read orientation in a true/false fashion. Do they match or do the strands run opposite each other? Weird mappings hint at biologically interesting things like deletions, insertions, duplications, inversions, etc. Each has a distinctive signal.
-
-
-Goal: Identify the mutation. Tell where and what kind (deletions, insertions, duplications, inversions). 
-
-get sam file
-interpret what's going on in the sam file
-vwa
-
-```
-wget -r "ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/dmel_r6.13_FB2016_05/gtf/dmel-all-r6.13.gtf.gz" -O "/home/jbriner/Dropbox/UCI/Classes/(F16) Informatics/FinalExercises/Overview/dmel-all-r6.13.gtf.gz" | gunzip *.gz | less
-```
