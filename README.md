@@ -38,14 +38,15 @@ Go to the most current download genomes section at flybase.org and download the 
 -------------------------------------------------
 
 
-##0) Preliminaries
+##Setting up: get file, load modules
 
-Module load allows you to use software uploaded by individual users, modifying your environment on a per-module basis. 
-To see software JJ has made available to the cluster:
 ```shell
-	module avail #see what's available
-	module load jje/jjeutils jje/kent 
-	module list #verify
+wget -O - /data/users/jbriner/ee282/dmel-all-chromosome-r6.13.fasta ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.13.fasta.gz \
+| gunzip dmel-all-chromosome-r6.13.fasta \
+| less
+
+module load jje/kent/2014.02.19 | module load jje/jjeutils
+module list #verify
 ```
 
 
@@ -53,114 +54,85 @@ To see software JJ has made available to the cluster:
 
 ----------------------------------------------------------
 
-##1) Prepare the files.
+##Print a summary report: total number of (nucelotides, Ns, sequences)
 ```
-#1.1) Download the fasta of all chromosomes with wget (the -P prefix specifies the download destination). Pipe into gunzip.
+#1. Total number of sequences
+		#Since each sequence is prefaced by a header, search for the number of times a header-specific string occurs:
+		grep "species=Dmel" -o dmel-all-chromosome-r6.13.fasta | wc -l 
+		    #Output (headered file) = 1870
 
-wget -r -A "ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.13.fasta.gz" -O "/home/jbriner/Desktop/(F16) Informatics/FinalExercises/Overview/dmel-all-chromosome-r6.13.fasta" | gunzip  *.fastq.gz | less
 
-#1.2) Get a sense for what I'm dealing with
+	#2. Exclude the header(s) and create a new, headerless fasta file
+		#This deletes all the characters from ">" to the end of the line, then creates a new file
+		sed 's/>.*$//' dmel-all-chromosome-r6.13.fasta > dmel-all-chromosome-r6.13.2.fasta
 
-cd "/home/jbriner/Dropbox/UCI/Classes/(F16) Informatics/FinalExercises/Overview" 
-head "dmel-all-chromosome-r6.13.fasta"
+
+	#3. Total number of nucleotides (A,C,T,G) in headerless file
+		egrep "A|C|T|G" -o dmel-all-chromosome-r6.13.2.fasta | wc -l
+		    #Output (headerless file) = 142573024
+
+
+	#4. Total number of Ns (unknown bases) in headerless file
+		grep N -o dmel-all-chromosome-r6.13.2.fasta | wc -l
+		    #Output (headerless file) = 1152978
 ```
 
 ------------------------------------------------------------------------
 
 
-##2) Summary time
-
-###Packages used:
-
-bioawk
-
-bedtools http://bedtools.readthedocs.io/en/latest/
-
-data_hacks ?
-
-GAG ?
+##Print a summary report: total number of (nucelotides, Ns, sequences), but now for sequence data split into two parts: > 100kb and < 100kb
 
 ```
-	#Install package. Command line utilities for data analysis
-	pip install data_hacks
-	seq_length.py input_file.fasta |cut -f 2 | histogram.py --percentage --max=12972 --min=1001
+#0. Working with the original headered file again.
+
+	dmel_fasta=dmel-all-chromosome-r6.13.fasta 	#giving this a nickname	
+	less -N -S $dmel_fasta
+	echo $dmel_fasta 	#check that nickname points to birth name
+
+	faSize $dmel_fasta 	#Prints the total base count
+
+
+#1. Filter sequences that are LESS than (or = to) 100000 nucleotides long: set ceiling with maxSize
+ 
+	faFilter -maxSize=100000 $dmel_fasta dmel_fasta_less \
+	| faSize dmel_fasta_less 	#confirm size filter worked
+	
+	#Print summary reports 
+		faSize dmel_fasta_less		#Total no. sequences: 1863
+		sed 's/>.*$//' dmel_fasta_less > dmel_fasta_less_behead 	#Strip headers
+		egrep "A|C|T|G" -o dmel_fasta_less_behead | wc -l 	#Total no. nucleotides: 5515449
+		grep N -o dmel_fasta_less_behead | wc -l	#Total no. Ns: 662593
+
+
+#2. Filter sequences MORE than (or = to) 100000 nucleotides long: set floor with minSize
+
+	faFilter -minSize=100000 $dmel_fasta dmel_fasta_more
+
+	#Print summary reports 
+		faSize dmel_fasta_more		#Total no. sequences: 7		
+		sed 's/>.*$//' dmel_fasta_more > dmel_fasta_more_behead 	#Strip headers
+		egrep "A|C|T|G" -o dmel_fasta_more_behead | wc -l 	#Total no. nucleotides: 137057575
+		grep N -o dmel_fasta_more_behead | wc -l	#Total no. Ns: 490385
 ```
 
+Print a summary report: total number of (nucelotides, Ns, sequences), but now for sequence data split into two parts: > 100kb and < 100kb
 
-2.1) Print a summary report: total number of (nucelotides, Ns, sequences)
+```
+#See R script “MyWorkA_SummarizeGenomeAssembly_Plots.R” for the plotting details. I’m just prepping data files here.
 
-	```
-	#1. Total number of sequences
-		#Since each sequence is prefaced by a header, search for the number of times a header-specific string occurs:
-		grep "species=Dmel" -o dmel-all-chromosome-r6.13.fasta | wc -l 
-			#Output = 1870
-		
-		
-	#2. Exclude the header(s) and create a new, headerless fasta file
-		#This deletes all the characters from ">" to the end of the line, then creates a new file
-		sed 's/>.*$//' dmel-all-chromosome-r6.13.fasta > dmel-all-chromosome-r6.13.2.fasta
 
+#1. Sequence length distribution
+
+	bioawk -c fastx '{ print $name, length($seq) }' $dmel_fasta > dmel_fasta_seqlength
+
+
+#2. Sequence GC% distribution. Ignore N's. 
+
+	bioawk -c fastx '{ print $name, gc($seq) }' $dmel_fasta > dmel_fasta_GC
+
+
+#3. Cumulative genome size sorted from largest to smallest sequences
+
+
+```
 	
-	#3. Total number of nucleotides (A,C,T,G) in headerless file
-		egrep "A|C|T|G" -o dmel-all-chromosome-r6.13.2.fasta | wc -l
-			#Output (header file) = 142576909 
-			#Output (headerless file) = 142573024
-
-	
-	#4. Total number of Ns (unknown bases) in headerless file
-		grep N -o dmel-all-chromosome-r6.13.2.fasta | wc -l
-			#Output (header file) = 1154850
-			#Output (headerless file) = 1152978
-	```
-
-
-
-2.2) Print a summary report: total number of (nucelotides, Ns, sequences), but now for sequence data split into two parts: > 100kb and < 100kb
-
-	```
-	#1. Return to using the original, header'd file
-	grep "length=23513712l" -o dmel-all-chromosome-r6.13.fasta | wc -l 
-
-
-	#how many sequences are shorter than 100000bp
-	bioawk -cfastx 'BEGIN{ shorter = 0} {if (length($seq) < 100000) shorter += 1} END {print "shorter sequences", shorter}' test-trimmed.fastq
-	
-	
-	#----------------
-	
-	
-	#Extract mapped reads with header:
-	awk -c sam -H '!and($flag,4)'
-	
-	#faSize 
-	
-	#count sequences using the built-in variable NR (number of records):
-	bioawk -c fastx 'END{print NR}' test.fastq
-
-	```
-
-
-----------------------------------------------------------------------
-
-##3) Print summary plots
-
-###Bioawk 
-Bioawk makes it nicer to deal with bio data files (e.g. SAM, FASTA/Q). You can use bioawk to both filter on size and get GC content. 
-https://www.biostars.org/p/47751/
-
-`bioawk -c sam`
-
-
-
-####3.1) Sequence length distribution
-
-
-####3.2) Sequence GC% distribution
-
-Get the %GC from FASTA. Ignore N's.
-`awk -c fastx '{ print ">"$name; print gc($seq) }' seq.fa.gz`
-
-
-####3.3) Cumulative genome size sorted from largest to smallest sequences
-
-
