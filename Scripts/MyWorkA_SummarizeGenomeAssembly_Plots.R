@@ -63,7 +63,7 @@ library(splitstackshape)
     #Plot
     genomesize_plot <- ggplot(dmel_seqlength_simp.df, aes(x=genomicLocation, y=sizepercent)) + geom_bar(stat="identity", fill="violetred3", width=.5) +
       ggtitle("Bar plot: Cumulative genome size, largest to smallest") +
-      labs(x="chromosome", y="size (as percentage of total genome)") +
+      labs(x="chromosome arm", y="size (as percentage of total genome)") +
       theme(plot.title = element_text(family = "Trebuchet MS", color="#000066", face="bold", size=24)) +
       theme(axis.title = element_text(family = "Trebuchet MS", color="#666666", face="bold", size=16))       
           
