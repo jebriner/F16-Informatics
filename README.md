@@ -55,7 +55,7 @@ module list #verify
 ----------------------------------------------------------
 
 ##Print a summary report: total number of (nucelotides, Ns, sequences)
-```
+```shell
 #1. Total number of sequences
 		#Since each sequence is prefaced by a header, search for the number of times a header-specific string occurs:
 		grep "species=Dmel" -o dmel-all-chromosome-r6.13.fasta | wc -l 
@@ -82,7 +82,7 @@ module list #verify
 
 ##Print a summary report: total number of (nucelotides, Ns, sequences), but now for sequence data split into two parts: > 100kb and < 100kb
 
-```
+```shell
 #0. Working with the original headered file again.
 
 	dmel_fasta=dmel-all-chromosome-r6.13.fasta 	#giving this a nickname	
@@ -119,7 +119,7 @@ module list #verify
 ##Print summary plots for the original, unsplit sequence data
 
 
-```
+```shell
 #See R script “MyWorkA_SummarizeGenomeAssembly_Plots.R” for the plotting details. I’m just prepping data files here.
 
 
@@ -135,8 +135,10 @@ module list #verify
 
 #3. Cumulative genome size sorted from largest to smallest sequences
 
+	#manipulations in R
 
 ```
+###Genome assembly plots (R)
 
 ```R
 #(F16) Informatics
@@ -214,7 +216,7 @@ library(splitstackshape)
 ```
 
 
-##Summarize an annotation file
+##Summarize an annotation file (all in R)
 
 ```R
 
