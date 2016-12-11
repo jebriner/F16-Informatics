@@ -46,7 +46,7 @@ library(splitstackshape)
       theme(plot.title = element_text(family = "Trebuchet MS", color="#000066", face="bold", size=24)) +
       theme(axis.title = element_text(family = "Trebuchet MS", color="#666666", face="bold", size=16)) 
     
-  #2. Sequence GC% distribution
+  #2. Sequence GC% distribution [DONE]
    
     GC_plot <- ggplot(dmel_GC.df, aes(x=percentGC)) + geom_histogram(fill="deepskyblue4") + 
       ggtitle("Histogram: Sequences by GC content") +
@@ -55,7 +55,7 @@ library(splitstackshape)
       theme(axis.title = element_text(family = "Trebuchet MS", color="#666666", face="bold", size=16)) 
     
     
-  #3. Cumulative genome size sorted from largest to smallest sequences      
+  #3. Cumulative genome size sorted from largest to smallest sequences [DONE]      
     
     #Make the first df column an ordered factor so ggplot doesn't alphebetize my chromosomes. Want to keep it ordered by size.
       dmel_seqlength_simp.df$genomicLocation <- factor(dmel_seqlength_simp.df$genomicLocation, levels = dmel_seqlength_simp.df$genomicLocation) 
