@@ -78,7 +78,7 @@ module load jje/kent/2014.02.19 | module load jje/jjeutils
 
 
 #----------------------------------------------
-#Now print summary plots for the same stuff on the original, unsplit sequence data
+#Print summary plots for the original, unsplit sequence data
 #----------------------------------------------
 
 #See R script “MyWorkA_SummarizeGenomeAssembly_Plots.R” for the plotting details. I’m just prepping data files here.
@@ -96,45 +96,10 @@ module load jje/kent/2014.02.19 | module load jje/jjeutils
 
 #3. Cumulative genome size sorted from largest to smallest sequences
 
-	
+	#manipulations in R
 
 
 
 
 
-#----------------------------------------
-
-uniq -c #counts number of unique
-sort by column 1 and do the reverse: puts the most common first
-
-#ggplot to command line utilities: template
-plot cdf2
-
-bioawk
-sort based on length
-on begin, print header
-print the rest of the line
-
-
-
-
-#161130 - JJ's script for extract, transform, label
-#-------------------------------------------------
-assembly1 = whatever.fasta
-assembly2 = whatever2.fasta
-
-bioawk -c fastx ' {print length($seq) "\tassembly1\" } '$assembly1 \
-| sort -rnk1,1 \
-| awk ' BEGIN {print "Length/tAssembly" } {print} ' \
-> assembly1.lengths.txt
-
-bioawk -c fastx ' {print length($seq) "\tassembly2\" } '$assembly2 \
-| sort -rnk1,1 \
-| awk ' BEGIN {print "Length/tAssembly" } {print} ' \
-> assembly2.lengths.txt
-
-
-plotCDF2 assembly{1,2}.lengths.txt assembly.CDF.png
-
-less 'which plotCDF2'
 
